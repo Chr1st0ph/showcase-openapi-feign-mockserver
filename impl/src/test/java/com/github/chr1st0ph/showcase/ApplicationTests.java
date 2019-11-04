@@ -34,7 +34,7 @@ class ApplicationTests {
 	@BeforeEach
 	public void configureTest() throws JsonProcessingException {
 		mockServer.when(HttpRequest.request().withMethod("GET").withPath("/coolStuffs"))
-				.respond(HttpResponse.response().withBody(objectMapper.writeValueAsBytes(buildExpectedResponse())));
+				.respond(HttpResponse.response().withBody(objectMapper.writeValueAsBytes(buildCoolStuffList())));
 		mockServer.when(HttpRequest.request().withMethod("GET").withPath("/coolStuffs/1111"))
 				.respond(HttpResponse.response().withBody(objectMapper.writeValueAsBytes(coolStuff)));
 		mockServer.when(HttpRequest.request().withMethod("POST").withPath("/coolStuffs"))
@@ -44,7 +44,7 @@ class ApplicationTests {
 	@Test
 	void testGet() {
 		List<CoolStuff> response = client.getCoolStuff();
-		assertThat(response).isEqualTo(buildExpectedResponse());
+		assertThat(response).isEqualTo(buildCoolStuffList());
 	}
 
 	@Test
@@ -59,7 +59,7 @@ class ApplicationTests {
 		assertThat(response).isEqualTo(coolStuff);
 	}
 
-	protected List<CoolStuff> buildExpectedResponse() {
+	protected List<CoolStuff> buildCoolStuffList() {
 		return Arrays.asList(coolStuff, buildCoolStuff(2222L));
 	}
 
