@@ -12,16 +12,16 @@ import com.github.chr1st0ph.showcase.api.CoolStuffApi;
 @Configuration
 @Profile("mock-server")
 public class TestFeignClientConfiguration {
-  @Bean
-  @Primary
-  public CoolStuffApi buildTestCoolStuffApi(ClientAndServer clientAndServer) {
-    return new ApiClient()
-        .setBasePath(String.format("http://localhost:%d/", clientAndServer.getLocalPort()))
-        .buildClient(CoolStuffApi.class);
-  }
 
-  @Bean(destroyMethod = "stop")
-  public ClientAndServer buildClientAndServer() {
-    return ClientAndServer.startClientAndServer();
-  }
+	@Bean
+	@Primary
+	public CoolStuffApi buildTestCoolStuffApi(ClientAndServer clientAndServer) {
+		return new ApiClient().setBasePath(String.format("http://localhost:%d/", clientAndServer.getLocalPort()))
+				.buildClient(CoolStuffApi.class);
+	}
+
+	@Bean(destroyMethod = "stop")
+	public ClientAndServer buildClientAndServer() {
+		return ClientAndServer.startClientAndServer();
+	}
 }

@@ -20,62 +20,54 @@ import org.springframework.beans.factory.annotation.Autowired;
 @MockServerSpringBootTest
 class ApplicationTests {
 
-  @Autowired private ClientAndServer mockServer;
+	@Autowired
+	private ClientAndServer mockServer;
 
-  @Autowired private CoolStuffApi client;
+	@Autowired
+	private CoolStuffApi client;
 
-  @Autowired private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-  @BeforeEach
-  public void configureTest() throws JsonProcessingException {
-    mockServer
-        .when(HttpRequest.request().withMethod("GET").withPath("/coolStuffs"))
-        .respond(
-            HttpResponse.response().withBody(objectMapper.writeValueAsBytes(buildExpectedResponse())));
-    mockServer
-	    .when(HttpRequest.request().withMethod("GET").withPath("/coolStuffs/1111"))
-	    .respond(
-	        HttpResponse.response().withBody(objectMapper.writeValueAsBytes(buildCoolStuff())));
-    mockServer
-        .when(HttpRequest.request().withMethod("POST").withPath("/coolStuffs"))
-        .respond(
-            HttpResponse.response().withBody(objectMapper.writeValueAsBytes(buildCoolStuff())));
-  }
+	private CoolStuff coolStuff = buildCoolStuff(1111L);
 
-  @Test
-  void testGet() {
-    List<CoolStuff> response = client.getCoolStuff();
-    assertThat(response).isEqualTo(buildExpectedResponse());
-  }
+	@BeforeEach
+	public void configureTest() throws JsonProcessingException {
+		mockServer.when(HttpRequest.request().withMethod("GET").withPath("/coolStuffs"))
+				.respond(HttpResponse.response().withBody(objectMapper.writeValueAsBytes(buildExpectedResponse())));
+		mockServer.when(HttpRequest.request().withMethod("GET").withPath("/coolStuffs/1111"))
+				.respond(HttpResponse.response().withBody(objectMapper.writeValueAsBytes(coolStuff)));
+		mockServer.when(HttpRequest.request().withMethod("POST").withPath("/coolStuffs"))
+				.respond(HttpResponse.response().withBody(objectMapper.writeValueAsBytes(coolStuff)));
+	}
 
-  @Test
-  void testGetById() {
-    CoolStuff response = client.getCoolStuffById(1111L);
-    assertThat(response).isEqualTo(buildCoolStuff());
-  }
+	@Test
+	void testGet() {
+		List<CoolStuff> response = client.getCoolStuff();
+		assertThat(response).isEqualTo(buildExpectedResponse());
+	}
 
-  @Test
-  void testPost() {
-    CoolStuff response = client.postCoolStuff(buildCoolStuff());
-    assertThat(response).isEqualTo(buildCoolStuff());
-  }
+	@Test
+	void testGetById() {
+		CoolStuff response = client.getCoolStuffById(1111L);
+		assertThat(response).isEqualTo(coolStuff);
+	}
 
-  protected List<CoolStuff> buildExpectedResponse() {
-    CoolStuff cool1 = buildCoolStuff();
+	@Test
+	void testPost() {
+		CoolStuff response = client.postCoolStuff(coolStuff);
+		assertThat(response).isEqualTo(coolStuff);
+	}
 
-    CoolStuff cool2 = new CoolStuff();
-    cool2.setId(2222L);
-    cool2.setName("cool-name 2");
-    cool2.setTag("cool-2");
+	protected List<CoolStuff> buildExpectedResponse() {
+		return Arrays.asList(coolStuff, buildCoolStuff(2222L));
+	}
 
-    return Arrays.asList(cool1);
-  }
-
-  private CoolStuff buildCoolStuff() {
-    CoolStuff cool1 = new CoolStuff();
-    cool1.setId(1111L);
-    cool1.setName("cool-name 1");
-    cool1.setTag("cool-1");
-    return cool1;
-  }
+	private CoolStuff buildCoolStuff(long id) {
+		CoolStuff result = new CoolStuff();
+		result.setId(id);
+		result.setName(String.format("cool-name %d", id));
+		result.setTag(String.format("cool-tag %d", id));
+		return result;
+	}
 }

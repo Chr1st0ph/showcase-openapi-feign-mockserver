@@ -11,4 +11,5 @@ import org.springframework.test.context.ActiveProfiles;
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest
 @ActiveProfiles("mock-server")
-public @interface MockServerSpringBootTest {}
+public @interface MockServerSpringBootTest {
+}
