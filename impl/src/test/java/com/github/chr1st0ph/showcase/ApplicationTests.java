@@ -32,7 +32,7 @@ class ApplicationTests {
 	private CoolStuff coolStuff = buildCoolStuff(1111L);
 
 	@BeforeEach
-	public void configureTest() throws JsonProcessingException {
+	void configureTest() throws JsonProcessingException {
 		mockServer.when(HttpRequest.request().withMethod("GET").withPath("/coolStuffs"))
 				.respond(HttpResponse.response().withBody(objectMapper.writeValueAsBytes(buildCoolStuffList())));
 		mockServer.when(HttpRequest.request().withMethod("GET").withPath("/coolStuffs/1111"))
@@ -59,7 +59,7 @@ class ApplicationTests {
 		assertThat(response).isEqualTo(coolStuff);
 	}
 
-	protected List<CoolStuff> buildCoolStuffList() {
+	private List<CoolStuff> buildCoolStuffList() {
 		return Arrays.asList(coolStuff, buildCoolStuff(2222L));
 	}
 

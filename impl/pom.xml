@@ -140,7 +140,7 @@
 							<version>${api.version}</version>
 							<type>jar</type>
 							<overWrite>true</overWrite>
-							<outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+							<outputDirectory>${project.build.directory}/generated-sources/openapi/</outputDirectory>
 							<includes>specs/api.yaml</includes>
 							<overWrite>true</overWrite>
 						</artifactItem>
@@ -158,7 +158,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/specs/api.yaml</inputSpec>
+							<inputSpec>${project.build.directory}/generated-sources/openapi/specs/api.yaml</inputSpec>
 							<generatorName>java</generatorName>
 							<library>feign</library>
 							<configOptions>
