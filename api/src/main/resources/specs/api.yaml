@@ -98,6 +98,10 @@ components:
           type: string
         tag:
           type: string
+        commons:
+          type: array
+          items:
+            $ref: "commons.yaml#/components/schemas/CommonStuff"
     CoolStuffs:
       type: array
       items:
