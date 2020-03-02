@@ -141,7 +141,6 @@
 							<type>jar</type>
 							<overWrite>true</overWrite>
 							<outputDirectory>${project.build.directory}/generated-sources/openapi/</outputDirectory>
-							<includes>specs/api.yaml,specs/commons.yaml</includes>
 							<overWrite>true</overWrite>
 						</artifactItem>
 					</artifactItems>
